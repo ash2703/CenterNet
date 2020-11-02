@@ -7,10 +7,10 @@ import cv2
 from .ddd_utils import compute_box_3d, project_to_image, draw_box_3d
 
 class Debugger(object):
-  def __init__(self, ipynb=False, theme='black', 
+  def __init__(self, ipynb=True, theme='black', 
                num_classes=-1, dataset=None, down_ratio=4):
     self.ipynb = ipynb
-    if not self.ipynb:
+    if self.ipynb:
       import matplotlib.pyplot as plt
       self.plt = plt
     self.imgs = {}
@@ -231,6 +231,7 @@ class Debugger(object):
           self.plt.imshow(cv2.cvtColor(v, cv2.COLOR_BGR2RGB))
         else:
           self.plt.imshow(v)
+        cv2.imwrite("../../../output1.jpg",v)
       self.plt.show()
 
   def save_img(self, imgId='default', path='./cache/debug/'):
@@ -245,6 +246,7 @@ class Debugger(object):
       prefix=idx
       np.savetxt(path + '/id.txt', np.ones(1) * (idx + 1), fmt='%d')
     for i, v in self.imgs.items():
+      print(i,v.shape)
       cv2.imwrite(path + '/{}{}.png'.format(prefix, i), v)
 
   def remove_side(self, img_id, img):
